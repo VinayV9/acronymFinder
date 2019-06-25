@@ -1,0 +1,19 @@
+
+BARACUDA (Boldly Advanced and Refined Aircraft Concept Under Development for AGATE) 
+SGRP (seating reference point) 
+2MASS (Two-Micron All Sky Survey) 
+ACIS (Advanced CCD Imaging Spectrometer) 
+W3C (World Wide Web Consortium) 
+T/C/F (Trim/Chassis/Final) 
+TLA (Three Letter Acronym) 
+5GL fifth generation language 
+EDS Electronic Data System 
+MPH miles per hour 
+F&M Facilities and Materials 
+ASCA Advanced Satellite for Cosmology and Astrophysics  
+4GT 4 Gigabyte memory Tuning 
+FAME for Full Sky Astrometric Mapping Explorer 
+DB DataBase CONTOUR for Comet Nuclear Tour 
+D2T2 for Dye Diffusion Thermal Transfer 
+CSE for Computer Science and Engineering 
+AI (Artificial Intelligence)
