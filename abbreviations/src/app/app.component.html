@@ -1,0 +1,97 @@
+<div class="navbar">
+    <h1 class="text-white heading">Acronym Finder</h1>
+</div>
+<div class="alert alert-{{status}} alert-dismissible " *ngIf="status">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close" (click)="closeAlert()">&times;</a>
+    {{ msg }}
+</div>
+<div class="row body">
+    <div class="col-sm-8 nopadding left-grid">
+        <table class="table table-fixed" *ngIf="data.length && toggleTable">
+            <thead>
+              <tr>
+                <th>S.no</th>
+                <th>Acronyms</th>
+                <th>Full form</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of data; let i = index">
+                <td scope="row">{{ i+1 }}</td>
+                <td> {{ row[0] }} </td>
+                <td> {{ row[2] }} </td>
+              </tr>
+            </tbody>
+        </table>
+    
+        <table class="table table-fixed" *ngIf="acroynms.length && !toggleTable">
+            <thead>
+              <tr>
+                <th>S.no</th>
+                <th>Acronyms</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of acroynms; let i = index">
+                <td>{{ i+1 }}</td>
+                <td> {{ row }} </td>
+              </tr>
+            </tbody>
+        </table>
+        <div class="info-msg  mb-0" *ngIf="!data.length && !acroynms.length">
+            <p  >
+                Upload file to create Corpus or get Acronyms of the given file
+             </p>
+        </div>
+        <div style="display: block;" *ngIf="data.length && acroynms.length">
+          <canvas baseChart 
+            [data]="pieChartData" 
+            [labels]="pieChartLabels" 
+            [chartType]="pieChartType"
+            [options]="pieChartOptions"
+            [plugins]="pieChartPlugins"
+            [legend]="pieChartLegend">
+          </canvas>
+        </div>
+        
+    </div>
+    <div class="col-sm-4 right-grid">
+        <div class="container-f">
+            
+          <div class="custom-file">
+              <input  type="file" class="custom-file-input" #textFileInput name="text-file"
+              (change)="processFile(textFileInput)">
+              <label class="custom-file-label" for="customFile">
+                <i class="fa fa-upload" aria-hidden="true"></i>
+                Choose file
+              </label>
+          </div>
+        
+          <div class="file">
+            <button type="button" class="btn file-btn" (click)="uploadTextFile()">Create Corpus</button>
+            <button type="button" class="btn file-btn" (click)="uploadResumeFile()">Get Acronyms</button>
+          </div>
+        
+          <h4 class="sub-heading">Enter Acronym</h4>
+          <div class="input-group mb-3">
+              <input class="form-control" #myInput focused="'true'" type="text" (keyup)="search($event.target.value)"
+            autocomplete="off" placeholder="type acroynm" [value]="selectedAcronym" [(ngModel)]="selectedAcronym">
+              <div class="input-group-append">
+                <button class="btn" type="button" (click)="getFullForm(selectedAcronym)">Get full form</button>
+              </div>
+          </div>
+          <ul class="list-group" id="myList" *ngIf="filtredAcroynms.length && selectedAcronym">
+              <li class="list-group-item" *ngFor="let acroynm of filtredAcroynms" (click)="selectAcronym(acroynm)">{{ acroynm }}</li>
+          </ul>
+          <br>
+          <div class="card" *ngIf="fullForm">
+              <div class="card-body">
+                {{ fullForm }}
+              </div>
+          </div>
+        </div>  
+    </div>
+</div>
+
+
+  
