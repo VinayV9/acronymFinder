@@ -27,19 +27,19 @@ app.after_request(add_cors_headers)
 
 def uploadFile(fileType):
    if fileType not in request.files:
-      return None
+      return (None, "no file found")
    file = request.files[fileType]
 
    if file.filename == '':
-      return None
+      return (None, "no file found")
 
    if file and allowed_file(file.filename):
       print("file type is allowed")
       filename = secure_filename(file.filename)
       file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-      return filename
+      return (filename, "file uploaded")
    else:
-      return None
+      return (None, "wrong file format")
 
 
 def sendResponse(data, msg, status):
@@ -50,22 +50,22 @@ def sendResponse(data, msg, status):
 def createCorpus():
    if request.method == 'POST':
      uploadedFile = uploadFile('text-file')
-     if(uploadedFile != None):
-        data = _acronym.accroymFinder(uploadedFile)
+     if(uploadedFile[0] != None):
+        data = _acronym.accroymFinder(uploadedFile[0])
         return sendResponse(data, "Created Corpus", "success")
      else:
-        return sendResponse(None, "Error Creating Corpus", "error")
+        return sendResponse(None, uploadedFile[1], "danger")
 
 
 @app.route('/api/acronyms',methods = ['POST'])
 def postAcronyms():
    if request.method == 'POST':
      uploadedFile = uploadFile('resume-file')
-     if(uploadedFile != None):
-        data = _acronym.getAccroyms(uploadedFile)
+     if(uploadedFile[0] != None):
+        data = _acronym.getAccroyms(uploadedFile[0])
         return sendResponse(data, "fetched acronyms", "success")
      else:
-        return sendResponse(None, "Error getting acronyms", "error")
+        return sendResponse(None, uploadedFile[1], "danger")
 
 
 @app.route('/api/acronyms',methods = ['GET'])

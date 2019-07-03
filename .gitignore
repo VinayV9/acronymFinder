@@ -1,0 +1,5 @@
+/env/**/*
+foo.py
+bar.py
+__pycache__/acronym.cpython-37.pyc
+.DS_Store

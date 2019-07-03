@@ -344,7 +344,9 @@ def getAccroyms(filename):
     file = open("./uploads/"+filename, "rb")
     text_words = file.read().decode('utf-8').split()
     file.close()
-
+    
+    file  = open("Acronyms.csv", "w")
+    file.write("{0}\n".format('Acronym'))
     for i in range(0,len(text_words)-1):
         word = text_words[i]
         z = re.match(r'[\(\[\]\{A-Z0-9][A-Z0-9,//\-_/&\.@|]{,8}[A-Z0-9 \)\]=]$',word)
@@ -353,7 +355,8 @@ def getAccroyms(filename):
         prevIndex = i-1
         if(z and len(word)>1 and len(word)<10 and word[:-1].isupper() and word not in STOPWORDS and acry not in STOPWORDS and ( not(text_words[i-1].isupper()) or not(text_words[i+1].isupper()))):
             abbr.append(word) 
-
+            file.write("{0}\n".format(word))
+    file.close()
     return abbr
 
 def accroymFinder(filename):
@@ -363,7 +366,8 @@ def accroymFinder(filename):
     file.close()
 
     postindex, preindex = 0, 0
-    file  = open("acronyms.csv", "a")
+    file  = open("Acronyms_fullform.csv", "w")
+    file.write("{0},{1},{2}\n".format('Acronym','type','defin'))
 
     for i in range(0,len(text_words)-1):
         word = text_words[i]
@@ -418,3 +422,37 @@ def getAcronymFullForm(acronym):
 
     file.close()
     return fullForm
+
+
+def cal_precision():
+   f1= pd.read_csv("Acronyms_fullform.csv")
+   f2= pd.read_csv("Acronyms.csv")
+   count=0
+   ACCR1={}
+   ACCR2={}
+   if ".txt" in filename:
+       for i,row in f2.iterrows():
+           if str(row.Acronym) not in ACCR1:
+               ACCR1[str(row.Acronym)]=""
+               count+=1
+
+       for j,row in f1.iterrows():
+           if str(row.Acronym) not in ACCR2:
+               ACCR2[str(row.Acronym)]=""
+       final_dict = dict(ACCR1.items() & ACCR2.items())
+       precision= (len(final_dict)/count+1)*100
+       #print(precision)
+       return precision
+   elif ".csv" in filename:
+       for i,row in f2.iterrows():
+           if (str(row.Acronym),str(row[1])) not in ACCR1:
+               ACCR1[(str(row.Acronym),str(row[1]))]=""
+               count+=1
+
+       for j,row in f1.iterrows():
+           if (str(row.Acronym),str(row[2])) not in ACCR2:
+               ACCR2[(str(row.Acronym),str(row[2]))]=""
+       final_dict = dict(ACCR1.items() & ACCR2.items())
+       precision= (len(final_dict)/(count+1))*100
+       #print(precision)
+       return precision
